@@ -204,6 +204,37 @@ Once deployed, Vercel will provide you with a URL (e.g., `https://your-app.verce
     └── ...                 # UI components
 ```
 
+## Dependencies and Architecture
+
+This application uses the **Vercel AI SDK** with provider-specific packages for a unified AI integration experience.
+
+### Core Dependencies
+
+- **`ai` (^3.0.0)**: Vercel AI SDK core library providing unified streaming and chat APIs
+- **`@ai-sdk/openai` (^0.0.42)**: OpenAI provider integration for the Vercel AI SDK
+- **`@ai-sdk/anthropic` (^0.0.33)**: Anthropic (Claude) provider integration for the Vercel AI SDK
+- **`@ai-sdk/google` (^0.0.33)**: Google (Gemini) provider integration for the Vercel AI SDK
+
+### Architecture Benefits
+
+✅ **Unified API**: All providers use the same interface through the Vercel AI SDK
+✅ **Simplified Integration**: No need for direct provider SDKs (openai, @anthropic-ai/sdk, @google/generative-ai)
+✅ **Consistent Streaming**: Single streaming implementation works across all providers
+✅ **Easy Provider Switching**: Switch between providers without changing API call patterns
+✅ **Future-Proof**: New providers can be added through @ai-sdk/* packages
+
+### Version Compatibility
+
+- The `ai` package version ^3.0.0 is compatible with all `@ai-sdk/*` packages listed above
+- The `@ai-sdk/*` packages use semantic versioning independently from the core `ai` package
+- When updating, ensure all `@ai-sdk/*` packages are compatible with your `ai` package version
+
+### Migration Notes
+
+This project has been migrated from direct provider SDKs to the unified @ai-sdk/* architecture:
+- ❌ **Removed**: `openai`, `@anthropic-ai/sdk`, `@google/generative-ai` (no longer needed)
+- ✅ **Added**: `@ai-sdk/openai`, `@ai-sdk/anthropic`, `@ai-sdk/google` (unified providers)
+
 ## Troubleshooting
 
 ### API Key Not Working
