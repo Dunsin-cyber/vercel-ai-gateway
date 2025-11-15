@@ -16,8 +16,6 @@
     }
   ],
   "env": {
-    "OPENAI_API_KEY": "@openai_api_key",
-    "ANTHROPIC_API_KEY": "@anthropic_api_key",
-    "GOOGLE_GENERATIVE_AI_API_KEY": "@google_generative_ai_api_key"
+    "VERCEL_AI_GATEWAY_KEY": "@vercel_ai_gateway_key"
   }
 }
