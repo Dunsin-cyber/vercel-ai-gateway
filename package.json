@@ -1,7 +1,10 @@
 {
-  "name": "ai-chat-app",
+  "name": "ai-chat-multi-provider",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,12 +14,18 @@
   "dependencies": {
     "next": "^14.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "ai": "^3.0.0",
+    "openai": "^4.20.0",
+    "@anthropic-ai/sdk": "^0.9.0",
+    "@google/generative-ai": "^0.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
   }
 }

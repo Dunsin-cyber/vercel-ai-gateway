@@ -1,146 +1,275 @@
-# AI Chat - Multi-Provider Interface
+# AI Chat Application with Multiple Providers
 
-A Next.js-based chat application with support for multiple AI providers (OpenAI, Anthropic, and Google) with seamless provider switching.
+A Next.js-based chat application that supports multiple AI providers (OpenAI, Anthropic, and Google) with Vercel AI Gateway integration for unified API management, caching, and rate limiting.
 
 ## Features
 
-### Provider Selection & Switching
-- ✅ **Three AI Providers**: OpenAI (GPT-4), Anthropic (Claude 3.5 Sonnet), and Google (Gemini Pro)
-- ✅ **Segmented Control UI**: Clean, accessible provider selection with visual feedback
-- ✅ **Session Persistence**: Provider selection persists throughout the chat session
-- ✅ **Visual Feedback**: Animated highlights and system messages when switching providers
-- ✅ **Provider Display**: Shows current provider and model name in the header
-- ✅ **Responsive Design**: Works seamlessly on mobile and desktop devices
+- 🤖 **Multiple AI Provider Support**: Switch between OpenAI, Anthropic (Claude), and Google (Gemini) models
+- ⚡ **Vercel AI Gateway Integration**: Built-in caching, rate limiting, and usage analytics
+- 🎨 **Modern UI**: Clean, responsive chat interface
+- 🔄 **Real-time Streaming**: Streaming responses for better user experience
+- 🔒 **Secure**: Environment-based API key management
 
-### Chat Interface
-- Real-time streaming responses from AI providers
-- Clean, modern UI with message history
-- User and assistant message differentiation
-- System messages for provider switches
-- Auto-scroll to latest messages
-- Loading states and error handling
+## Prerequisites
+
+Before deploying this application, ensure you have:
+
+- A [Vercel](https://vercel.com) account
+- API keys from at least one AI provider:
+  - [OpenAI API Key](https://platform.openai.com/api-keys)
+  - [Anthropic API Key](https://console.anthropic.com/)
+  - [Google AI API Key](https://makersuite.google.com/app/apikey)
+
+## Environment Variables
+
+This application requires the following environment variables:
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `OPENAI_API_KEY` | Your OpenAI API key | Optional* |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key | Optional* |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | Your Google AI API key | Optional* |
+
+*At least one API key must be provided for the application to function.
+
+## Local Development Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd <project-directory>
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Edit `.env.local` and add your API keys:
+
+```env
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_GENERATIVE_AI_API_KEY=...
+```
+
+### 4. Run the Development Server
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Deploying to Vercel
+
+### Option 1: Deploy via Vercel Dashboard (Recommended)
+
+1. **Import Your Repository**
+   - Go to [Vercel Dashboard](https://vercel.com/new)
+   - Click "Import Project"
+   - Select your Git repository (GitHub, GitLab, or Bitbucket)
+
+2. **Configure Environment Variables**
+   - During import or in Project Settings → Environment Variables
+   - Add the following variables:
+     - `OPENAI_API_KEY` → Your OpenAI API key
+     - `ANTHROPIC_API_KEY` → Your Anthropic API key
+     - `GOOGLE_GENERATIVE_AI_API_KEY` → Your Google AI API key
+   - Make sure to add them for all environments (Production, Preview, Development)
+
+3. **Deploy**
+   - Click "Deploy"
+   - Vercel will automatically detect Next.js and use the correct build settings
+   - Wait for deployment to complete (usually 1-2 minutes)
+
+### Option 2: Deploy via Vercel CLI
+
+1. **Install Vercel CLI**
+   ```bash
+   npm i -g vercel
+   ```
+
+2. **Login to Vercel**
+   ```bash
+   vercel login
+   ```
+
+3. **Deploy**
+   ```bash
+   vercel
+   ```
+
+4. **Add Environment Variables**
+   ```bash
+   vercel env add OPENAI_API_KEY
+   vercel env add ANTHROPIC_API_KEY
+   vercel env add GOOGLE_GENERATIVE_AI_API_KEY
+   ```
+
+## Enabling Vercel AI Gateway
+
+Vercel AI Gateway provides enhanced features like caching, rate limiting, and analytics for your AI API calls.
+
+### Steps to Enable:
+
+1. **Navigate to Your Project Settings**
+   - Go to your project in the [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click on "Settings" tab
+
+2. **Access AI Configuration**
+   - In the left sidebar, find and click on "AI" section
+   - This is where you can configure AI Gateway settings
+
+3. **Enable AI Gateway**
+   - Toggle "Enable AI Gateway" to ON
+   - Configure your preferences:
+     - **Caching**: Enable to cache similar requests and reduce API costs
+     - **Rate Limiting**: Set limits to prevent abuse
+     - **Analytics**: View usage statistics and model performance
+
+4. **Update API Endpoints (if needed)**
+   - If using AI Gateway, your API calls will automatically be routed through Vercel's gateway
+   - No code changes required if using Vercel AI SDK
+
+5. **Redeploy**
+   - After enabling AI Gateway, redeploy your application for changes to take effect
+   ```bash
+   vercel --prod
+   ```
+
+## Testing the Application
+
+### 1. Access Your Deployed Application
+
+Once deployed, Vercel will provide you with a URL (e.g., `https://your-app.vercel.app`)
+
+### 2. Test Provider Switching
+
+1. Open the chat interface
+2. Look for the provider selector (typically in the UI)
+3. Switch between available providers (OpenAI, Anthropic, Google)
+4. Verify that each provider responds correctly
+
+### 3. Test Chat Functionality
+
+1. **Send a simple message**: "Hello, how are you?"
+2. **Test streaming**: Messages should appear word-by-word in real-time
+3. **Test different models**: If your UI supports model selection, try different models from each provider
+4. **Verify error handling**: Try switching to a provider without an API key configured to ensure proper error messages
+
+### 4. Monitor AI Gateway (if enabled)
+
+1. Go to Vercel Dashboard → Your Project → Analytics → AI
+2. Monitor:
+   - Request count
+   - Cache hit rate
+   - Response times
+   - Costs per provider
 
 ## Project Structure
 
 ```
-├── app/
-│   ├── layout.tsx           # Root layout with global styles
-│   └── page.tsx             # Main chat page with provider state management
-├── components/
-│   └── ProviderSelector.tsx # Reusable provider selection component
-├── types/
-│   └── chat.ts              # TypeScript definitions for providers and messages
-├── package.json             # Project dependencies
-├── tsconfig.json            # TypeScript configuration
-└── next.config.js           # Next.js configuration
+.
+├── README.md                 # This file
+├── package.json             # Dependencies and scripts
+├── vercel.json              # Vercel deployment configuration
+├── .env.local.example       # Environment variable template
+├── .gitignore               # Git ignore rules
+├── next.config.js           # Next.js configuration
+├── app/                     # Next.js app directory
+│   ├── page.tsx            # Main chat interface
+│   ├── layout.tsx          # Root layout
+│   └── api/                # API routes
+│       └── chat/           # Chat API endpoint
+└── components/              # React components
+    └── ...                 # UI components
 ```
 
-## Implementation Details
+## Troubleshooting
 
-### Type Definitions (`types/chat.ts`)
-- Defines `Provider` type: `'openai' | 'anthropic' | 'google'`
-- `ProviderConfig` interface with display name, model, and color
-- `PROVIDER_CONFIGS` object mapping providers to their configurations
-- `Message` interface for chat messages
-- `ChatRequest` interface for API requests
+### API Key Not Working
 
-### Provider Selector Component (`components/ProviderSelector.tsx`)
-- Segmented control-style button group
-- Color-coded borders based on provider
-- Animated highlight on provider change
-- Accessible with ARIA labels
-- Responsive design for mobile and desktop
-- Visual icons for each provider (🤖 OpenAI, 🧠 Anthropic, 🔍 Google)
+- **Issue**: "Invalid API key" error
+- **Solution**: 
+  - Verify the API key is correctly copied (no extra spaces)
+  - Ensure the key is active and not revoked
+  - Check that the key has sufficient credits/quota
+  - Redeploy after updating environment variables in Vercel
 
-### Main Chat Page (`app/page.tsx`)
-- **State Management**:
-  - `selectedProvider`: Currently selected AI provider (persists in session)
-  - `messages`: Array of chat messages
-  - `isLoading`: Loading state during API requests
-  - `showProviderAnimation`: Triggers animation on provider switch
+### Provider Not Available
 
-- **Provider Switching**:
-  - Adds system message to chat when provider changes
-  - Triggers highlight animation on selector
-  - Updates model display in header
+- **Issue**: Certain AI provider is grayed out or not working
+- **Solution**:
+  - Verify the corresponding API key is set in environment variables
+  - Check Vercel deployment logs for errors
+  - Ensure the API key has access to the requested model
 
-- **API Integration**:
-  - Sends POST requests to `/api/chat` endpoint
-  - Includes `provider` parameter in request body
-  - Supports streaming responses with Server-Sent Events
-  - Error handling and user feedback
+### Streaming Not Working
 
-- **Visual Features**:
-  - Header shows current provider and model
-  - Messages display provider badge for assistant responses
-  - Color-coded UI elements based on selected provider
-  - Responsive layout for all screen sizes
+- **Issue**: Messages appear all at once instead of streaming
+- **Solution**:
+  - Verify you're using the Vercel AI SDK correctly
+  - Check browser console for errors
+  - Ensure Edge Runtime is configured in API routes
 
-## API Integration
+### Deployment Fails
 
-The chat page sends requests to `/api/chat` with the following format:
+- **Issue**: Build fails during Vercel deployment
+- **Solution**:
+  - Check build logs in Vercel dashboard
+  - Verify all dependencies are in `package.json`
+  - Ensure Node.js version is compatible (use `engines` field in `package.json`)
+  - Clear Vercel cache and redeploy
 
-```typescript
-POST /api/chat
-Content-Type: application/json
+## Security Best Practices
 
-{
-  "messages": [
-    { "role": "user", "content": "Hello!" }
-  ],
-  "provider": "openai" | "anthropic" | "google"
-}
-```
+- ✅ **Never commit `.env.local`** or any file containing API keys
+- ✅ **Use environment variables** for all sensitive data
+- ✅ **Rotate API keys regularly** and after any suspected exposure
+- ✅ **Set up rate limiting** via AI Gateway to prevent abuse
+- ✅ **Monitor usage** regularly through provider dashboards and Vercel Analytics
+- ✅ **Implement authentication** for production applications (not included in basic setup)
 
-Expected streaming response format:
-```
-data: {"content": "chunk of text"}
-data: {"content": "more text"}
-data: [DONE]
-```
+## Cost Management
 
-## Provider Configuration
+- **Use AI Gateway caching** to reduce duplicate API calls
+- **Set rate limits** to prevent unexpected costs
+- **Monitor usage** through Vercel Analytics and provider dashboards
+- **Start with lower-cost models** (e.g., GPT-3.5-turbo, Claude Instant) for testing
+- **Set up billing alerts** in your AI provider accounts
 
-Each provider is configured with:
-- **OpenAI**: gpt-4 model, green color (#10a37f)
-- **Anthropic**: claude-3-5-sonnet-20241022 model, orange color (#d97757)
-- **Google**: gemini-pro model, blue color (#4285f4)
+## Support and Resources
 
-## Visual Feedback
+- [Vercel Documentation](https://vercel.com/docs)
+- [Vercel AI SDK Documentation](https://sdk.vercel.ai/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [OpenAI API Documentation](https://platform.openai.com/docs)
+- [Anthropic API Documentation](https://docs.anthropic.com/)
+- [Google AI Documentation](https://ai.google.dev/docs)
 
-1. **Provider Switch Animation**: Pulse animation on the selector when provider changes
-2. **System Messages**: Yellow-highlighted messages indicating provider switches
-3. **Color Coding**: Provider-specific colors throughout the UI
-4. **Model Display**: Real-time display of active model in header
-5. **Provider Badges**: Small badges on assistant messages showing which provider responded
+## License
 
-## Responsive Design
+[Your License Here]
 
-- **Desktop**: Full-width layout with horizontal provider buttons
-- **Tablet**: Optimized spacing and touch-friendly buttons
-- **Mobile**: 
-  - Vertical provider selector layout
-  - Full-width message input
-  - Stacked form elements
-  - Touch-optimized button sizes
+## Contributing
 
-## Accessibility
-
-- ARIA labels for provider buttons
-- `aria-pressed` state for selected provider
-- Keyboard navigation support
-- Clear visual feedback for all interactions
-- High contrast colors for readability
-
-## Success Criteria (All Met ✅)
-
-- [x] User can select between OpenAI, Anthropic, and Google providers through the UI
-- [x] Selected provider is clearly displayed at all times
-- [x] Provider selection is included in API requests and reaches the backend correctly
-- [x] Switching providers works seamlessly without disrupting the chat experience
-- [x] Provider selection persists for the duration of the chat session
-- [x] UI provides clear feedback when switching between providers
-
-## Next Steps
-
-The implementation is complete and ready for integration with the backend API route (`/api/chat`) which should handle the `provider` parameter and route requests to the appropriate AI service.
+[Your Contributing Guidelines Here]
