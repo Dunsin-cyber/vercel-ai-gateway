@@ -79,7 +79,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 1. **Import Your Repository**
    - Go to [Vercel Dashboard](https://vercel.com/new)
    - Click "Import Project"
-   - Select your Git repository (GitHub, GitLab, or Bitbucket)
+   - Select your Git repository 
 
 2. **Configure Environment Variables**
    - During import or in Project Settings → Environment Variables
