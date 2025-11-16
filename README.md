@@ -21,11 +21,14 @@ Before deploying this application, ensure you have:
 
 ## Environment Variables
 
-This application requires the following environment variable:
+This application requires the following environment variables:
 
 | Variable | Description | Required |
 |----------|-------------|----------|
-| `VERCEL_AI_GATEWAY_KEY` | Single API key providing access to 100+ AI models through Vercel AI Gateway | Yes |
+| `VERCEL_AI_GATEWAY_KEY` | API key for authenticating with Vercel AI Gateway | Yes |
+| `VERCEL_AI_GATEWAY_ID` | Your unique gateway identifier from Vercel Dashboard | Yes |
+
+**📖 For detailed setup instructions, see [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md)**
 
 ## Local Development Setup
 
@@ -54,11 +57,14 @@ Create a `.env.local` file in the project root:
 cp .env.local.example .env.local
 ```
 
-Edit `.env.local` and add your Vercel AI Gateway key:
+Edit `.env.local` and add your Vercel AI Gateway credentials:
 
 ```env
-VERCEL_AI_GATEWAY_KEY=your_vercel_gateway_api_key_here
+VERCEL_AI_GATEWAY_KEY=your_gateway_api_key_here
+VERCEL_AI_GATEWAY_ID=your_gateway_id_here
 ```
+
+**📖 Need help getting these values? See [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md)**
 
 ### 4. Run the Development Server
 
@@ -83,9 +89,11 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 
 2. **Configure Environment Variables**
    - During import or in Project Settings → Environment Variables
-   - Add the following variable:
+   - Add the following variables:
      - `VERCEL_AI_GATEWAY_KEY` → Your Vercel AI Gateway API key
-   - Make sure to add it for all environments (Production, Preview, Development)
+     - `VERCEL_AI_GATEWAY_ID` → Your Vercel AI Gateway ID
+   - Make sure to add them for all environments (Production, Preview, Development)
+   - **📖 Setup help**: See [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md)
 
 3. **Deploy**
    - Click "Deploy"
@@ -112,65 +120,40 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 4. **Add Environment Variables**
    ```bash
    vercel env add VERCEL_AI_GATEWAY_KEY
+   vercel env add VERCEL_AI_GATEWAY_ID
    ```
+   
+   **📖 For detailed setup instructions**, see [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md)
 
 ## Vercel AI Gateway Configuration
 
-Vercel AI Gateway is **required** for this application to function. It serves as the unified authentication mechanism providing access to 100+ AI models (OpenAI, Anthropic, Google, and more) through a single API key, while also delivering enhanced features like caching, rate limiting, and analytics.
+Vercel AI Gateway is **required** for this application to function. It serves as the unified authentication mechanism providing access to multiple AI providers (OpenAI, Anthropic, Google, and more) through a single gateway, while also delivering enhanced features like caching, rate limiting, and analytics.
 
 ### Why Vercel AI Gateway?
 
-- **Unified Authentication**: Single API key replaces the need for separate keys from each AI provider
-- **Simplified Management**: No need to manage multiple API keys and credentials
+- **Unified Authentication**: Single gateway configuration for multiple AI providers
+- **Simplified Management**: Centralized credential management
 - **Cost Optimization**: Built-in caching reduces redundant API calls and costs
 - **Rate Limiting**: Protect your application from abuse and unexpected usage spikes
-- **Analytics & Monitoring**: Track usage, performance, and costs across all AI providers in one dashboard
-- **100+ Models**: Access to a wide range of AI models without individual provider integrations
+- **Analytics & Monitoring**: Track usage, performance, and costs in one dashboard
+- **Flexible**: Support for multiple AI models and providers
 
-### Steps to Set Up:
+### Quick Setup
 
-1. **Navigate to Your Vercel Dashboard**
-   - Go to [Vercel Dashboard](https://vercel.com/dashboard)
-   - Select your project (or create a new one)
+**📖 For complete step-by-step instructions, see [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md)**
 
-2. **Access AI Gateway Settings**
-   - In the left sidebar, find and click on the "AI" section
-   - This is where you'll configure your AI Gateway
-
-3. **Enable AI Gateway**
-   - Toggle "Enable AI Gateway" to ON
-   - Configure your preferences:
-     - **Caching**: Enable to cache similar requests and reduce API costs
-     - **Rate Limiting**: Set limits to prevent abuse and control costs
-     - **Analytics**: View usage statistics and model performance metrics
-
-4. **Obtain Your Gateway API Key**
-   - In the AI Gateway settings, you'll find your unique API key
-   - This key provides authentication to access all supported AI models
-   - Copy this key to use in your environment variables
-
-5. **Configure Environment Variable**
-   - Add the key to your project's environment variables:
-     - In Vercel Dashboard: Settings → Environment Variables → Add `VERCEL_AI_GATEWAY_KEY`
-     - Or via CLI: `vercel env add VERCEL_AI_GATEWAY_KEY`
-   - Make sure to add it for all environments (Production, Preview, Development)
-
-6. **Deploy Your Application**
-   - Deploy or redeploy your application for the changes to take effect
-   ```bash
-   vercel --prod
-   ```
+**Summary**:
+1. Go to [Vercel Dashboard](https://vercel.com/dashboard) → Your Project → Settings → Integrations
+2. Create or enable AI Gateway
+3. Get your Gateway ID and API Key
+4. Add environment variables:
+   - `VERCEL_AI_GATEWAY_KEY` - Your gateway API key
+   - `VERCEL_AI_GATEWAY_ID` - Your gateway identifier
+5. Redeploy your application
 
 ### Accessing AI Gateway Features
 
-Once configured, you can monitor and manage your AI usage:
-
-1. Go to Vercel Dashboard → Your Project → Analytics → AI
-2. View:
-   - Request count and cache hit rates
-   - Response times across providers
-   - Costs breakdown by model and provider
-   - Usage patterns and trends
+Once configured, monitor your AI usage in Vercel Dashboard → Your Project → Analytics → AI
 
 ## Testing the Application
 
@@ -253,23 +236,36 @@ This project has been migrated from direct provider SDKs to the unified @ai-sdk/
 
 ## Troubleshooting
 
+### "Failed to get response from AI provider"
+
+- **Issue**: Chat returns error when trying to get AI response
+- **Solutions**: 
+  1. Verify both `VERCEL_AI_GATEWAY_KEY` and `VERCEL_AI_GATEWAY_ID` are set correctly
+  2. Check that your Gateway ID matches the one in your Vercel Dashboard (no typos)
+  3. Ensure there are no extra spaces in your environment variables
+  4. Verify your gateway is enabled and active in Vercel Dashboard
+  5. Redeploy after updating environment variables
+  6. **📖 See [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md) for detailed troubleshooting**
+
 ### API Key Not Working
 
-- **Issue**: "Invalid API key" error
+- **Issue**: "Invalid API key" or authentication errors
 - **Solution**: 
   - Verify the `VERCEL_AI_GATEWAY_KEY` is correctly copied (no extra spaces)
   - Ensure the key is active and not revoked in your Vercel Dashboard
   - Confirm AI Gateway is enabled in your Vercel project settings
+  - Try regenerating the key in Vercel Dashboard
   - Redeploy after updating environment variables in Vercel
 
 ### Provider Not Available
 
 - **Issue**: Certain AI provider or model is not working
 - **Solution**:
-  - Verify the `VERCEL_AI_GATEWAY_KEY` is correctly set in environment variables
-  - Check Vercel deployment logs for authentication errors
+  - Verify both environment variables are set correctly
+  - Check Vercel deployment logs for detailed errors
   - Ensure AI Gateway is properly configured in your Vercel Dashboard
-  - Verify the specific model is available through Vercel AI Gateway
+  - Verify the providers are enabled in your gateway settings
+  - **📖 See [VERCEL_AI_GATEWAY_SETUP.md](./VERCEL_AI_GATEWAY_SETUP.md) for provider configuration**
 
 ### Streaming Not Working
 

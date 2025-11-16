@@ -11,7 +11,7 @@ export const PROVIDER_CONFIGS: Record<Provider, ProviderConfig> = {
   openai: {
     name: 'openai',
     displayName: 'OpenAI',
-    model: 'gpt-4',
+    model: 'gpt-4-turbo',
     color: '#10a37f',
   },
   anthropic: {
@@ -23,7 +23,7 @@ export const PROVIDER_CONFIGS: Record<Provider, ProviderConfig> = {
   google: {
     name: 'google',
     displayName: 'Google',
-    model: 'gemini-pro',
+    model: 'gemini-1.5-pro',
     color: '#4285f4',
   },
 };
